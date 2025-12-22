@@ -9,6 +9,9 @@ import errorHandler from "./middlewares/error.middleware.js";
 
 const app=express();
 
+app.get("/health",(req,res)=>{
+    res.status(200).send("OK");
+})
 
 app.use(cors({
     origin:process.env.CORS_ORIGIN || "*",
@@ -19,19 +22,10 @@ app.use(cors({
 app.use(express.json({limit: "16kb"}));
 app.use(express.static("public"));  
 
-const redisClient = new Redis({
-    host: process.env.REDIS_HOST || "127.0.0.1",
-    port: 6379
-});
-
-
 
 app.use(rateLimit({
-    store: new RedisStore({
-        sendCommand: (...args) => redisClient.call(...args),
-    }),
-    windowMs: 15 * 60 * 1000,
-    max: 100,
+    windowMs: 15 * 60 * 1000, 
+    max: 100, 
     message: "Too many requests from this IP, please try again later."
 }));
 
