@@ -6,7 +6,21 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sentence_transformers import SentenceTransformer
 from geopy.distance import geodesic
 from scipy.optimize import linear_sum_assignment
+from dotenv import load_dotenv
+import os
+from sentence_transformers import SentenceTransformer
 
+
+
+load_dotenv()   
+
+GEOAPIFY_API_KEY = os.getenv("GEOAPIFY")
+
+if not GEOAPIFY_API_KEY:
+    raise RuntimeError("GEOAPIFY_API_KEY is not set")
+
+
+MODEL = SentenceTransformer("all-MiniLM-L6-v2")
 # # ----------------------------
 # # Weights
 # # ----------------------------
@@ -179,7 +193,7 @@ def run_hungarian_allocation(users_df, internships_df):
         AFFIRMATIVE_WEIGHT = 0.05     # rural/tribal bonus
 
         LOCATION_DECAY_KM = 50.0
-        EMBED_MODEL_NAME = "all-MiniLM-L6-v2"
+        # EMBED_MODEL_NAME = "all-MiniLM-L6-v2"
 
         # ----------------------------
         # Internships Dataset
@@ -193,6 +207,15 @@ def run_hungarian_allocation(users_df, internships_df):
         # ])
         candidate=users_df
         internships=internships_df
+
+        # ----------------------------
+        # Enforce internship capacity
+        # ----------------------------
+        if "capacity" in internships.columns:
+            internships = internships.loc[
+            internships.index.repeat(internships["capacity"])
+            ].reset_index(drop=True)
+
         # ----------------------------
         # USERS (YOUR SCHEMA)
         # ----------------------------
@@ -211,8 +234,8 @@ def run_hungarian_allocation(users_df, internships_df):
         # ----------------------------
         # Embeddings
         # ----------------------------
-        model = SentenceTransformer(EMBED_MODEL_NAME)
-        item_embeddings = model.encode(
+        # model = SentenceTransformer(EMBED_MODEL_NAME)
+        item_embeddings = MODEL.encode(
             internships["description"].tolist(),
             normalize_embeddings=True
         )
@@ -239,7 +262,7 @@ def run_hungarian_allocation(users_df, internships_df):
             search_query = f"{city}, India"
             params = dict(
                 text=search_query,
-                apiKey=YOUR_API_KEY
+                apiKey=GEOAPIFY_API_KEY
                 )
             
 
@@ -278,7 +301,7 @@ def run_hungarian_allocation(users_df, internships_df):
         # Hybrid Score Function
         # ----------------------------
         def hybrid_score(candidate):
-            user_emb = model.encode([candidate["skills"]], normalize_embeddings=True)
+            user_emb = MODEL.encode([candidate["skills"]], normalize_embeddings=True)
             text_sim = cosine_similarity(user_emb, item_embeddings).flatten()
 
             loc_sim = np.array([
@@ -330,11 +353,11 @@ def run_hungarian_allocation(users_df, internships_df):
                 "final_score": round(1 - cost_matrix[r][c], 4)
             })
             
-        return pd.DataFrame(allocations)  
+        return (pd.DataFrame(allocations))  
 
-allocation_df = run_hungarian_allocation(users_df, internships_df)
+# allocation_df = run_hungarian_allocation(users_df, internships_df)
 
 # allocation_df = pd.DataFrame(allocations)
 
-print("\n✅ FINAL OPTIMAL ALLOCATION USING HUNGARIAN ALGORITHM:\n")
-print(allocation_df)
+# print("\n✅ FINAL OPTIMAL ALLOCATION USING HUNGARIAN ALGORITHM:\n")
+# print(allocation_df)
