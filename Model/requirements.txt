@@ -20,3 +20,7 @@ pydantic
 
 # Utilities
 python-multipart
+
+# Environment variables
+python-dotenv
+requests
