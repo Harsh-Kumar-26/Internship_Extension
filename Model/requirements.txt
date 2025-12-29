@@ -1,0 +1,22 @@
+# Core ML & Data
+numpy
+pandas
+scikit-learn
+scipy
+
+# NLP / Embeddings
+sentence-transformers
+torch
+
+# Geolocation
+geopy
+
+# Backend / API
+fastapi
+uvicorn
+
+# Data validation
+pydantic
+
+# Utilities
+python-multipart
