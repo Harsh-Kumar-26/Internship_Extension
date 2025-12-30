@@ -24,3 +24,4 @@ python-multipart
 # Environment variables
 python-dotenv
 requests
+gradio

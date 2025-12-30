@@ -12,6 +12,10 @@ load_dotenv()
 
 app = FastAPI(title="Internship Allocation Service")
 
+@app.get("/health")
+def health_status():
+    return {"status": 200, "message": "Microservice is up and running."}
+
 @app.post("/allocate", response_model=list[Outputfrommodel])
 def allocate(req: Inputtomodel):
     try:
