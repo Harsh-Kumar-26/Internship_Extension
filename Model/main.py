@@ -602,7 +602,7 @@ def run_hungarian_allocation(users_df, internships_df):
             search_query = f"{city}, India"
             params = dict(
                 text=search_query,
-                apiKey=YOUR_API_KEY
+                apiKey=GEOAPIFY_API_KEY_API_KEY
                 )
             
 
