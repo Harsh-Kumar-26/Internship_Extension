@@ -9,6 +9,32 @@ const userschema=new mongoose.Schema({
         required:[true,"Full Name is required"],
         trim:true
     },
+    gender:{
+        type:String,
+        enum:["Male","Female","Prefer not to say"],
+        required:[true,"Gender is required"]
+    },
+    date_of_birth:{
+        type:Date,
+        required:[true,"Date of Birth is required"]
+    },
+    portfolio_link:{
+        type:String,
+        default:"No portfolio site"
+    },
+    cntry_code:{
+        type:String,
+        default:"+91"
+    },
+    phone_number:{
+        type:String,
+        validate:{
+            validator:function(val){
+                return /^\d{10}$/.test(val);
+            },
+            message:"Phone number must be 10 digits"
+        }
+    },
     skills:{
         type:String,
     },
@@ -17,6 +43,23 @@ const userschema=new mongoose.Schema({
     },
     rural:{
         type:Number
+    },
+    applied_internships:[
+        {
+            applied:{
+                type:mongoose.Schema.Types.ObjectId,
+                ref:"Internmodel"
+            },
+            status:{
+                type:String,
+                enum:["pending","rejected","accepted"],
+                default:"pending"
+            }
+        }
+    ],
+    resume:{
+        type:String,
+        default:"No resume provided"
     },
     tribal:{
         type:Number
@@ -42,6 +85,28 @@ const userschema=new mongoose.Schema({
     refreshtoken:{
         type:String
     },
+    role:{
+        type:String,
+        enum:["user","admin"],
+        default:"user"
+    },
+    bookmarked_internships:{
+        type:[mongoose.Schema.Types.ObjectId],
+        ref:"Internmodel",
+        default:[]
+    },
+    bookmarked_users:[
+        {
+            user:{
+                type:mongoose.Schema.Types.ObjectId,
+                ref:"Usermodel"
+            },
+            internship:{
+                type:mongoose.Schema.Types.ObjectId,
+                ref:"Internmodel"
+            }
+        }
+    ]
 },{timestamps:true});
 
 userschema.pre("save",async function(next){
