@@ -9,6 +9,18 @@ const userschema=new mongoose.Schema({
         required:[true,"Full Name is required"],
         trim:true
     },
+    skills:{
+        type:String,
+    },
+    location:{
+        type:String
+    },
+    rural:{
+        type:Number
+    },
+    tribal:{
+        type:Number
+    },
     email:{
         type:String,
         required:[true,"Email id is required"],

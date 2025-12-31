@@ -542,7 +542,7 @@ def run_hungarian_allocation(users_df, internships_df):
         AFFIRMATIVE_WEIGHT = 0.05     # rural/tribal bonus
 
         LOCATION_DECAY_KM = 50.0
-        EMBED_MODEL_NAME = "all-MiniLM-L6-v2"
+        # EMBED_MODEL_NAME = "all-MiniLM-L6-v2"
 
         # ----------------------------
         # Internships Dataset
@@ -574,8 +574,8 @@ def run_hungarian_allocation(users_df, internships_df):
         # ----------------------------
         # Embeddings
         # ----------------------------
-        model = SentenceTransformer(EMBED_MODEL_NAME)
-        item_embeddings = model.encode(
+        # model = SentenceTransformer(EMBED_MODEL_NAME)
+        item_embeddings = MODEL.encode(
             internships["description"].tolist(),
             normalize_embeddings=True
         )
@@ -602,7 +602,7 @@ def run_hungarian_allocation(users_df, internships_df):
             search_query = f"{city}, India"
             params = dict(
                 text=search_query,
-                apiKey=GEOAPIFY_API_KEY_API_KEY
+                apiKey=GEOAPIFY_API_KEY
                 )
             
 
@@ -641,7 +641,7 @@ def run_hungarian_allocation(users_df, internships_df):
         # Hybrid Score Function
         # ----------------------------
         def hybrid_score(candidate):
-            user_emb = model.encode([candidate["skills"]], normalize_embeddings=True)
+            user_emb = MODEL.encode([candidate["skills"]], normalize_embeddings=True)
             text_sim = cosine_similarity(user_emb, item_embeddings).flatten()
 
             loc_sim = np.array([
@@ -790,7 +790,7 @@ def run_hungarian_allocation(users_df, internships_df):
 
 
 
-        return pd.DataFrame(allocations), np.array(cost_matrix)
+        return pd.DataFrame(allocations)
 
 # allocation_df ,cost= run_hungarian_allocation(users_df, internships_df)
 
