@@ -95,16 +95,10 @@ const userschema=new mongoose.Schema({
         ref:"Internmodel",
         default:[]
     },
-    bookmarked_users:[
+    createdinternships:[
         {
-            user:{
-                type:mongoose.Schema.Types.ObjectId,
-                ref:"Usermodel"
-            },
-            internship:{
-                type:mongoose.Schema.Types.ObjectId,
-                ref:"Internmodel"
-            }
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"Internmodel"
         }
     ]
 },{timestamps:true});

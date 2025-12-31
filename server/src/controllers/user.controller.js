@@ -412,6 +412,17 @@ const singleuserintern =asynchandler(async(req,res)=>{
     }
 
     const response=await axios.post(`${process.env.SIH_PREDICTION_API}/allocate`,inputdata);
+    const score=response.data[0]?.score || 0;
+    if(score>=0.75){
+        response.data[0].recommendation="Highly Recommended";
+    }
+    else if(score>=0.5){
+        response.data[0].recommendation="Recommended";
+    }
+    else{
+        response.data[0].recommendation="Not Recommended";
+    }
+
     return res.status(200).json(new ApiResponse(200,response.data[0],"Internship score fetched successfully"));
 });
 

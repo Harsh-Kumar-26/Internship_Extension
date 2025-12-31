@@ -30,6 +30,11 @@ const internschema=new mongoose.Schema({
         type:Number,
         required:[true,"Duration is required"]
     },
+    status:{
+        type:String,
+        enum:["open","closed","paused"],
+        default:"open"
+    },
     posted_by:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"User",
@@ -60,6 +65,12 @@ const internschema=new mongoose.Schema({
                         default:"pending"
                     }
                 }
+    ],
+    bookmarked_users:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:"User"
+        }
     ]
 },{timestamps:true});
 export const Internmodel=mongoose.model("Internmodel",internschema);
