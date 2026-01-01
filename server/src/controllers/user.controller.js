@@ -9,8 +9,6 @@ import {ApiError} from "../utils/apierror.js"
 import User from "../models/user.model.js";
 import { Internmodel } from "../models/intern.model.js";
 import ApiResponse from "../utils/apiresponse.js";
-import UploadOnCloudinary from "../utils/cloudinary.js"
-import { verifyJWT } from "../middlewares/auth.middleware.js";
 import jwt from "jsonwebtoken";
 import axios from "axios";
 
@@ -46,6 +44,10 @@ const registeruser = asynchandler(async (req, res, next) => {
     throw new ApiError(400, "All fields are required");
   }
 
+
+  if(!role){
+    role="user";
+  }
   if (password.length < 8) {
     throw new ApiError(400, "Password must be at least 8 characters long");
   }
@@ -177,7 +179,7 @@ const getcurrentuser=asynchandler(async(req,res)=>{
     return res.status(200).json(new ApiResponse(200,req.user,"Current user fetched ssuccessfully"));
 })
 const getuserfromid=asynchandler(async(req,res)=>{
-    const {id}=req.body;
+    const {id}=req.params;
     const user = await User.findById(id).select("-password -refreshToken");
     if(!user){
         throw new ApiError(404,"User not found");
@@ -380,7 +382,7 @@ const allinternswithseats=asynchandler(async(req,res)=>{
 
 const singleuserintern =asynchandler(async(req,res)=>{
     const userid=req.user._id;
-    const {internid}=req.body;
+    const {internid}=req.params;
     const user=await User.findById(userid);
     if(!user){
         throw new ApiError(404,"User not found");
@@ -404,19 +406,23 @@ const singleuserintern =asynchandler(async(req,res)=>{
             {
                 "internship_id":internid,
                 "title":intern.title,
-                "description":intern.short_description,
+                "description":intern.skills_required,
                 "location":intern.location,
                 "capacity":(intern.seats - intern.applicant_count)
             }
         ]
     }
-
-    const response=await axios.post(`${process.env.SIH_PREDICTION_API}/allocate`,inputdata);
-    const score=response.data[0]?.score || 0;
-    if(score>=0.75){
-        response.data[0].recommendation="Highly Recommended";
+    let response;
+    // console.log(`${process.env.SIH_PREDICTION_API}allocate`);
+    
+    try{
+    response=await axios.post(`${process.env.SIH_PREDICTION_API}allocate`,inputdata);
     }
-    else if(score>=0.5){
+    catch(error){
+        throw new ApiError(500,error);
+    }
+    const score=response.data[0]?.score || 0;
+    if(score>=0.45){
         response.data[0].recommendation="Recommended";
     }
     else{

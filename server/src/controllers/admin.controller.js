@@ -3,10 +3,8 @@ import {ApiError} from "../utils/apierror.js"
 import User from "../models/user.model.js";
 import { Internmodel } from "../models/intern.model.js";
 import ApiResponse from "../utils/apiresponse.js";
-import UploadOnCloudinary from "../utils/cloudinary.js"
-import { verifyJWT } from "../middlewares/auth.middleware.js";
-import jwt from "jsonwebtoken";
 import axios from "axios";
+import usermodel from "../models/user.model.js";
 
 const createintern=asynchandler(async(req,res)=>{
     const {title,skills_required,location,seats,stipend,duration_in_months,short_description,description_link,start_date}=req.body;
@@ -147,7 +145,14 @@ const acceptapplication=asynchandler(async(req,res)=>{
     if( application.status==="rejected"){
         throw new ApiError(409,"Application already rejected");
     }
+    if(intern.accepted_students>=intern.seats){
+        throw new ApiError(409,"All seats for this internship have been filled");
+    }
     application.status="accepted";
+    intern.accepted_students+=1;
+    if(intern.accepted_students===intern.seats){
+        intern.status="closed";
+    }
     await intern.save({validateBeforeSave:false});
     const user=await User.findById(userid);
     const userapplication=user.applied_internships.find(app=>app.applied.equals(internid));
@@ -206,6 +211,11 @@ const internstatuschange=asynchandler(async(req,res)=>{
     if(!intern){
         throw new ApiError(404,"Internship not found");
     }
+    if(intern.status==="closed" && status==="open"){
+        if(intern.accepted_students>=intern.seats){
+            throw new ApiError(409,"All seats for this internship have been filled");
+        }
+    }
     intern.status=status;
     await intern.save({validateBeforeSave:false});
     return res.status(200).json(new ApiResponse(200,null,"Internship status changed successfully"));
@@ -228,6 +238,16 @@ const bookmarkuser=asynchandler(async(req,res)=>{
     return res.status(200).json(new ApiResponse(200,null,"User bookmarked/unbookmarked successfully"));
 });
 
+const getadminallinterns=asynchandler(async(req,res)=>{
+    const adminid=req.user.id;
+    const adminuser=await User.findById(adminid);
+    const interns=adminuser.createdinternships.map(async(internid)=>{
+        const intern=await Internmodel.findById(internid);
+        return intern;
+    });
+    const resolvedinterns=await Promise.all(interns);
+    return res.status(200).json(new ApiResponse(200,resolvedinterns,"All internships fetched successfully"));
+});
 
 const internshipscored=asynchandler(async(req,res)=>{
     const users = await usermodel.aggregate([
@@ -274,7 +294,7 @@ const internshipscored=asynchandler(async(req,res)=>{
 
 const inputData = { users, internships };
 
-    const response = await axios.post(`${process.env.SIH_PREDICTION_API}/allocate`, inputData);
+    const response = await axios.post(`${process.env.SIH_PREDICTION_API}allocate`, inputData);
     const scoredData = response.data;
 
     return res.status(200).json(new ApiResponse(200, scoredData, "Internship scoring completed successfully"));
@@ -283,4 +303,4 @@ const inputData = { users, internships };
 });
 
 
-export {createintern,editintern,deleteintern,adminallinterns,acceptapplication,rejectapplication,internstatuschange,bookmarkuser,internshipscored};
+export {createintern,editintern,getadminallinterns,deleteintern,adminallinterns,acceptapplication,rejectapplication,internstatuschange,bookmarkuser,internshipscored};

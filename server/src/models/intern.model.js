@@ -1,4 +1,3 @@
-import { desc } from "framer-motion/client";
 import mongoose from "mongoose";
 
 const internschema=new mongoose.Schema({
@@ -13,6 +12,10 @@ const internschema=new mongoose.Schema({
     location:{
         type:String,
         required:[true,"Location is required"]
+    },
+    accepted_students:{
+        type:Number,
+        default:0
     },
     seats:{
         type:Number,

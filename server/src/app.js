@@ -1,11 +1,11 @@
 import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import Redis from "ioredis";
-import RedisStore from "rate-limit-redis";
 import userrouter from "./routes/user.route.js"
 import rateLimit from "express-rate-limit";
 import errorHandler from "./middlewares/error.middleware.js";
+import commonrouter from "./routes/common.route.js"
+import adminroute from "./routes/admin.route.js"
 
 const app=express();
 
@@ -32,7 +32,10 @@ app.use(rateLimit({
 
 app.use(express.urlencoded({extended:true , limit: "16kb"}));      
 app.use(cookieParser());
+app.use("/api/v1/common",commonrouter);
 app.use("/api/v1/user",userrouter);
+app.use("/api/v1/admin",adminroute);
+
 app.use(errorHandler);
 app.use((req, res) => {
     res.status(404).json({ message: "Not Found" });

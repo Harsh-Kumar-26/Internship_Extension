@@ -1,9 +1,9 @@
 import { ApiError } from "../utils/apierror.js";
 import { asynchandler } from "../utils/asynchandler.js";
 import jwt from "jsonwebtoken";
-import { User } from "../models/user.model.js";
+import User from "../models/user.model.js";
 
-export const verifyJWT = asynchandler(async(req, res, next) => {
+export const verifyJWTadmin = asynchandler(async(req, res, next) => {
     try {
        
         
@@ -20,6 +20,12 @@ export const verifyJWT = asynchandler(async(req, res, next) => {
         if (!user) {
             
             throw new ApiError(401, "Invalid Access Token");
+        }
+        if(!user?.refreshtoken){
+            throw new ApiError(401, "Please login to continue");
+        }
+        if(user.role=="user"){
+            throw new ApiError(403,"Unauthorized access");
         }
     
         req.user = user;
