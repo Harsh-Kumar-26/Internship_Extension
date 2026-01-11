@@ -1,4 +1,4 @@
-
+import { asynchandler } from "../utils/asynchandler.js";
 
 const getinternfrominternid=asynchandler(async(req,res)=>{
     const {internid}=req.params;

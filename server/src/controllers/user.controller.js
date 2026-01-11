@@ -12,19 +12,34 @@ import ApiResponse from "../utils/apiresponse.js";
 import jwt from "jsonwebtoken";
 import axios from "axios";
 
-const generateaccessandrefreshtoken=async(userid)=>{
-    try{
-    const user=await User.findById(userid);
-    const accestoken=user.generateaccesstoken();
-    const refreshtoken=user.generateRefreshToken();
-    user.refreshtoken=refreshtoken;
-    await user.save({validateBeforeSave:false});
-    return {accestoken,refreshtoken};
-}
-catch(error){
-    throw new ApiError(500,"Something went wrong while generating refresh and access token");
-}
-}
+
+
+const generateAccessAndRefreshToken = async (userId) => {
+  try {
+    const user = await User.findById(userId);
+
+    if (!user) {
+      throw new Error("User not found while generating tokens");
+    }
+
+    const accesstoken = user.generateAccessToken();
+    const refreshtoken = user.generateRefreshToken();
+    
+    
+
+    if (!accesstoken || !refreshtoken) {
+      throw new Error("Token generation failed");
+    }
+
+    user.refreshtoken = refreshtoken;
+    await user.save({ validateBeforeSave: false });
+
+    return { accesstoken, refreshtoken };
+  } catch (error) {
+    console.error("TOKEN GENERATION ERROR:", error);
+    throw error; 
+  }
+};
 
 const registeruser = asynchandler(async (req, res, next) => {
   const {
@@ -105,14 +120,16 @@ const loginuser=asynchandler(async(req,res)=>{
     if(!correctpassword){
         throw new ApiError(401,"Incorrect password");
     }
-    const {accestoken,refreshtoken}=await generateaccessandrefreshtoken(user._id);
+    const {accesstoken,refreshtoken}=await generateAccessAndRefreshToken(user._id);
+    console.log(accesstoken,refreshtoken);
+    
     const loggedinuser=await User.findById(user._id).select("-password -refreshtoken");
-    const option={
-        httpOnly:true,
-        secure:true,
-        sameSite: "None",
-    }
-    return res.status(200).cookie("accesstoken",accestoken,option).cookie("refreshtoken",refreshtoken,option)
+   const options = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+  };
+    return res.status(200).cookie("accesstoken",accesstoken,options).cookie("refreshtoken",refreshtoken,options)
     .json(
         new ApiResponse(200,{
                 user:loggedinuser,
@@ -122,28 +139,29 @@ const loginuser=asynchandler(async(req,res)=>{
         "User logged in succesfully")
     )
 })
+const logoutuser = asynchandler(async (req, res) => {
+    console.log("USER:", req.user);
 
-const logoutuser=asynchandler(async(req,res)=>{
-await User.findByIdAndUpdate(
-        
-        req.user._id,
-        {
-            $unset:{
-                refreshtoken: ""
-            }
-        },
-            {
-                new:true        
-            }
-    )
+  await User.findByIdAndUpdate(
+    req.user._id,
+    {
+      $unset: { refreshToken: "" },
+    },
+    { new: true }
+  );
 
-    const options={
-            httpOnly:true,     
-            secure:true,
-            sameSite: "None"
-        }
-        res.status(200).clearCookie("accesstoken",options).clearCookie("refreshtoken",options).json(new ApiResponse(200,{},"User logged out successfully"))
-})
+  const options = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+  };
+
+  return res
+    .status(200)
+    .clearCookie("accesstoken", options)
+    .clearCookie("refreshtoken", options)
+    .json(new ApiResponse(200, {}, "User logged out successfully"));
+});
 
 
 const refreshaccesstoken=asynchandler(async(req,res)=>{
@@ -281,6 +299,9 @@ const applyforinter=asynchandler(async(req,res)=>{
     await user.save({validateBeforeSave:false});
     return res.status(200).json(new ApiResponse(200,{},"Successfully applied for the intern"));
 });
+
+
+
 const removefromintern=asynchandler(async(req,res)=>{
     const userid=req.user._id;
     const {internid}=req.body;
@@ -358,7 +379,7 @@ const allapplied_internships=asynchandler(async(req,res)=>{
             status:intern.status
         };
     });
-    const allinterns=await Promise.all(appliedintern);
+    const allinterns=await Promise.all(appliedintern); // important
     return res.status(200).json(new ApiResponse(200,allinterns,"All applied internships fetched successfully"));
 });
 
@@ -375,11 +396,14 @@ const allbookmarked_internships=asynchandler(async(req,res)=>{
     const allinterns=await Promise.all(bookmarkedintern);
     return res.status(200).json(new ApiResponse(200,allinterns,"All bookmarked internships fetched successfully"));
 });
+
 const allinternswithseats=asynchandler(async(req,res)=>{
     const interns=await Internmodel.find(intern=>(intern.applicant_count<intern.seats));
     return res.status(200).json(new ApiResponse(200,interns,"All internships fetched successfully"));
 });
 
+
+// doubt
 const singleuserintern =asynchandler(async(req,res)=>{
     const userid=req.user._id;
     const {internid}=req.params;

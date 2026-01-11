@@ -6,7 +6,7 @@ const internschema=new mongoose.Schema({
         required:[true,"Intern title is required"]
     },
     skills_required:{
-        type:String,
+        type:String, //doubt array hona chahiye na
         required:[true,"Skills required for the intern is required"]
     },
     location:{

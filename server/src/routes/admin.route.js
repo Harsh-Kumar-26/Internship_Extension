@@ -14,4 +14,7 @@ adminroute.route("/internstatuschange/:internid").post(verifyJWTadmin,internstat
 adminroute.route("/bookmarkuser").post(verifyJWTadmin,bookmarkuser);
 adminroute.route("/internshipscored").get(verifyJWTadmin,internshipscored);
 
+
+
+
 export default adminroute;

@@ -36,7 +36,7 @@ const userschema=new mongoose.Schema({
         }
     },
     skills:{
-        type:String,
+        type:[String],
     },
     location:{
         type:String
@@ -115,7 +115,7 @@ userschema.methods.isPasswordCorrect=async function (password) {
     return await bcrypt.compare(password,this.password)
 }
 
-userschema.methods.generateaccesstoken=function(){
+userschema.methods.generateAccessToken=function(){
     return jwt.sign(
         {
             _id:this._id,
