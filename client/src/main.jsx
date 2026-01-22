@@ -14,7 +14,7 @@ import AllInterns from './Pages/AdminDashboard/Allinterns.jsx';
 import Application from './Pages/AdminDashboard/Application.jsx';
 import Applicant from './Pages/AdminDashboard/ApplicantProfile.jsx';
 import CreateIntern from './Pages/AdminDashboard/CreateIntern.jsx';
-import { LoginModal } from './pages/Auth.jsx';
+
 
 const router = createBrowserRouter([
   {
