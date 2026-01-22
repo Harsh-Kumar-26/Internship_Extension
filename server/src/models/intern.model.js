@@ -31,7 +31,7 @@ const internschema=new mongoose.Schema({
     },
     duration_in_months:{
         type:Number,
-        required:[true,"Duration is required"]
+        required:[true,"Duration is required"] // important
     },
     status:{
         type:String,
@@ -40,13 +40,13 @@ const internschema=new mongoose.Schema({
     },
     posted_by:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:"User",
+        ref:"User",  // isme doubt hai kaise hota hai 
         required:[true,"Posted by is required"]
     },
     short_description:{
         type:String,
         required:[true,"Short description is required"],
-        maxlength:[ 200,"Short description cannot exceed 200 characters"]
+        maxlength:[ 200,"Short description cannot exceed 200 characters"] // maxlength
     },
     description_link:{
         type:String,
@@ -64,7 +64,7 @@ const internschema=new mongoose.Schema({
                     },
                     status:{
                         type:String,
-                        enum:["pending","rejected","accepted"],
+                        enum:["pending","rejected","accepted"], // important
                         default:"pending"
                     }
                 }

@@ -121,19 +121,20 @@ const loginuser=asynchandler(async(req,res)=>{
         throw new ApiError(401,"Incorrect password");
     }
     const {accesstoken,refreshtoken}=await generateAccessAndRefreshToken(user._id);
-    console.log(accesstoken,refreshtoken);
+    console.log("tokens",accesstoken,refreshtoken);
     
     const loggedinuser=await User.findById(user._id).select("-password -refreshtoken");
-   const options = {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
-  };
+const options = {
+  httpOnly: true,
+  secure: false,     // MUST be false on localhost
+  sameSite: "Lax",   // works for localhost
+};
+
     return res.status(200).cookie("accesstoken",accesstoken,options).cookie("refreshtoken",refreshtoken,options)
     .json(
         new ApiResponse(200,{
                 user:loggedinuser,
-                accesstoken:accestoken,
+                accesstoken:accesstoken,
                 refreshtoken:refreshtoken
             },
         "User logged in succesfully")
@@ -397,11 +398,15 @@ const allbookmarked_internships=asynchandler(async(req,res)=>{
     return res.status(200).json(new ApiResponse(200,allinterns,"All bookmarked internships fetched successfully"));
 });
 
-const allinternswithseats=asynchandler(async(req,res)=>{
-    const interns=await Internmodel.find(intern=>(intern.applicant_count<intern.seats));
-    return res.status(200).json(new ApiResponse(200,interns,"All internships fetched successfully"));
-});
+const allinternswithseats = asynchandler(async (req, res) => {
+  const interns = await Internmodel.find({
+    $expr: { $lt: ["$applicant_count", "$seats"] } // very important
+  });
 
+  return res
+    .status(200)
+    .json(new ApiResponse(200, interns, "All internships fetched successfully"));
+});
 
 // doubt
 const singleuserintern =asynchandler(async(req,res)=>{

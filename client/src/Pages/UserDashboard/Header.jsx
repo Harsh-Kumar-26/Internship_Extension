@@ -1,19 +1,34 @@
-import { LogOut, Bell, Settings } from "lucide-react"
+import { isDragActive } from "framer-motion";
+import { LogOut, Bell, Settings ,Moon} from "lucide-react"
+import { useEffect, useState } from "react"
 
 export default function DashboardHeader({ username }) {
+ const [isDark,setDark]=useState(false);
+
+
+async function toogleDark(params) {
+  setDark(!isDark)
+}
+
+ useEffect(() => {
+    if (isDark) {
+      document.documentElement.classList.add('dark');// important hai hai 
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDark]);
   return (
     <div className="dashboard-header">
       <div className="header-left">
         <div className="user-greeting">
           <h1 className="username">Welcome, {username}</h1>
-          <p className="user-subtitle">Here are your internship opportunities</p>
+<button className="w-5 h-5" onClick={toogleDark}><Moon/></button>
+      
         </div>
       </div>
 
       <div className="header-right">
-        <button className="header-icon-btn" aria-label="Settings">
-          <Settings size={20} />
-        </button>
+   
      
       </div>
     </div>

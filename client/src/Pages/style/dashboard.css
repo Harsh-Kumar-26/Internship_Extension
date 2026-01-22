@@ -825,3 +825,224 @@
 .stat-value {
   font-weight: 600;
 }
+/* =========================================
+   DARK MODE OVERRIDES
+   Matches class "dark" added by Tailwind/React
+   ========================================= */
+
+/* 1. Main Container & Global Text */
+.dark .dashboard-container {
+  background: linear-gradient(135deg, #0f172a 0%, #020617 100%);
+  color: #e2e8f0;
+}
+
+/* 2. Sidebar */
+.dark .sidebar {
+  background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+  border-right: 1px solid #1e293b;
+}
+
+.dark .sidebar-logo {
+  background: rgba(30, 41, 59, 0.5);
+}
+
+.dark .sidebar-footer {
+  border-top: 1px solid #1e293b;
+}
+
+.dark .nav-item:hover,
+.dark .logout-link:hover {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+}
+
+/* 3. Dashboard Header */
+.dark .dashboard-header-wrapper {
+  background: #1e293b;
+  border-bottom: 1px solid #334155;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+}
+
+.dark .mobile-toggle-btn {
+  color: #e2e8f0;
+}
+
+.dark .mobile-toggle-btn:hover {
+  background: #334155;
+}
+
+.dark .username {
+  color: #f8fafc;
+}
+
+.dark .user-subtitle {
+  color: #94a3b8;
+}
+
+.dark .header-icon-btn {
+  background: #0f172a;
+  color: #94a3b8;
+  border: 1px solid #334155;
+}
+
+.dark .header-icon-btn:hover {
+  background: #334155;
+  color: #60a5fa;
+  border-color: #60a5fa;
+}
+
+/* 4. Dashboard Content */
+.dark .page-title {
+  color: #f8fafc;
+}
+
+.dark .page-subtitle {
+  color: #94a3b8;
+}
+
+/* 5. Internship Cards & List Items */
+.dark .internship-card,
+.dark .application-item {
+  background: #1e293b;
+  border-color: #334155;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+}
+
+.dark .internship-card:hover,
+.dark .application-item:hover {
+  border-color: #60a5fa;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
+  background: #253346;
+}
+
+.dark .company-name,
+.dark .app-company {
+  color: #f8fafc;
+}
+
+.dark .position-title,
+.dark .app-position {
+  color: #cbd5e1;
+}
+
+.dark .card-description {
+  color: #94a3b8;
+}
+
+/* Inner Sections (Details & Stats) */
+.dark .card-details,
+.dark .app-details,
+.dark .internship-stats {
+  background: #0f172a;
+  border: 1px solid #334155;
+}
+
+.dark .detail-item,
+.dark .stat-label {
+  color: #cbd5e1;
+}
+
+.dark .stat-value {
+  color: #f8fafc;
+}
+
+.dark .detail-item svg {
+  color: #60a5fa;
+}
+
+/* 6. Skills & Tags */
+.dark .skills-label,
+.dark .match-label {
+  color: #94a3b8;
+}
+
+/* 7. Action Buttons */
+.dark .bookmark-btn,
+.dark .delete-btn {
+  color: #64748b;
+}
+
+.dark .bookmark-btn:hover,
+.dark .delete-btn:hover {
+  color: #60a5fa;
+  background: rgba(59, 130, 246, 0.1);
+}
+
+/* 8. Application List Buttons */
+.dark .action-btn {
+  background: #0f172a;
+  border-color: #334155;
+  color: #e2e8f0;
+}
+
+.dark .action-btn:hover {
+  border-color: #60a5fa;
+  color: #60a5fa;
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.dark .action-btn.primary {
+  background: linear-gradient(135deg, #3b82f6, #06b6d4);
+  color: white;
+  border: none;
+}
+
+/* 9. Status Badges */
+.dark .status-reviewing {
+  background: rgba(30, 64, 175, 0.3);
+  color: #93c5fd;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.dark .status-interview {
+  background: rgba(146, 64, 14, 0.3);
+  color: #fcd34d;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.dark .status-accepted {
+  background: rgba(22, 101, 52, 0.3);
+  color: #86efac;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.dark .status-rejected {
+  background: rgba(153, 27, 27, 0.3);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.dark .status-pending {
+  background: rgba(75, 85, 99, 0.3);
+  color: #e5e7eb;
+  border: 1px solid rgba(107, 114, 128, 0.3);
+}
+
+/* 10. Empty State */
+.dark .empty-state {
+  background: #1e293b;
+  border-color: #334155;
+}
+
+.dark .empty-state h3 {
+  color: #f8fafc;
+}
+
+.dark .empty-state p {
+  color: #94a3b8;
+}
+
+.dark .empty-state svg {
+  color: #475569;
+}
+
+/* 11. Scrollbars */
+.dark .dashboard-content::-webkit-scrollbar-thumb,
+.dark .sidebar::-webkit-scrollbar-thumb {
+  background: #475569;
+}
+
+.dark .dashboard-content::-webkit-scrollbar-thumb:hover,
+.dark .sidebar::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}

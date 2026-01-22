@@ -15,12 +15,12 @@ export default function ApplyInternships() {
 
   async function getInternship() {
     try {
-      const res = await axios.get("http://localhost:8000/getallintern", {
+      const res = await axios.get("http://localhost:8000/api/v1/user/getallintern", {
         withCredentials: true,
       })
 
       setInterns(
-        res.data.interns || [
+        res.data.data|| [
           {
             title: "Full stack developer",
             location: "Bihar",
@@ -43,8 +43,8 @@ export default function ApplyInternships() {
   async function apply(id) {
     try {
       await axios.post(
-        "applyforintern",
-        { id },
+        "http://localhost:8000/api/v1/user/applyforintern",
+        { internid:id },
         { withCredentials: true }
       )
       alert("Successfully applied")
@@ -56,8 +56,8 @@ export default function ApplyInternships() {
   async function bookmark(id) {
     try {
       await axios.post(
-        "bookmarked_internships",
-        { id },
+        "http://localhost:8000/api/v1/user/bookmarked_internships",
+        { internid:id },
         { withCredentials: true }
       )
       toggleBookmark(id)
