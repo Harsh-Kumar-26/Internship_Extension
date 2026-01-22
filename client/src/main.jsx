@@ -1,9 +1,8 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import App from './App.jsx'
 import {createBrowserRouter,RouterProvider} from "react-router-dom";
-import HomePage from './pages/Homepage.jsx';
+import HomePage from './Pages/homepage.jsx'
 import Dashboard from './Pages/UserDashboard.jsx';
 import ApplyInternships from './Pages/UserDashboard/Applyinternship.jsx';
 import AppliedInternships from './Pages/UserDashboard/Appliedinternship.jsx';
