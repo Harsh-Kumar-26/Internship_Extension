@@ -14,7 +14,7 @@ app.get("/health",(req,res)=>{
 })
 
 app.use(cors({
-    origin:"http://localhost:5173" ,
+    origin:"https://internship-extension-111.vercel.app" ,
     credentials:true
 }));
 
