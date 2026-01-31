@@ -40,7 +40,7 @@ export default function Internship() {
            
 
       const res = await axios.get(
-        `http://localhost:8000/getintern/${id}`,
+        `https://internship-extension.onrender.com/getintern/${id}`,
         { withCredentials: true }
       )
 

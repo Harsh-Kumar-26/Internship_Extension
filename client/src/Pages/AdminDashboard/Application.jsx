@@ -21,7 +21,7 @@ export default function Application() {
   async function fetchApplications() {
     try {
       const res = await axios.get(
-        "http://localhost:8000/api/v1/admin/internshipscored",
+        "https://internship-extension.onrender.com/api/v1/admin/internshipscored",
         { withCredentials: true }
       );
 
@@ -52,8 +52,8 @@ export default function Application() {
 
     try {
       const endpoint = action === 'accept' 
-        ? "http://localhost:8000/api/v1/admin/acceptapplication"
-        : "http://localhost:8000/api/v1/admin/rejectapplication";
+        ? "https://internship-extension.onrender.com/api/v1/admin/acceptapplication"
+        : "https://internship-extension.onrender.com/api/v1/admin/rejectapplication";
 
       await axios.post(
         endpoint,
@@ -71,7 +71,7 @@ export default function Application() {
   const bookmarkUser = async (userid) => {
     try {
       await axios.post(
-        "http://localhost:8000/api/v1/admin/bookmarkuser",
+        "https://internship-extension.onrender.com/api/v1/admin/bookmarkuser",
         { id, userid },
         { withCredentials: true }
       );

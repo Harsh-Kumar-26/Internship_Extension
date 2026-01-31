@@ -10,7 +10,7 @@ export default function AppliedInternships() {
   async function getAppliedInternships() {
     try {
       const res = await axios.get(
-        "http://localhost:8000/api/v1/user/allapplied_internships",
+        "https://internship-extension.onrender.com/api/v1/user/allapplied_internships",
         { withCredentials: true }
       );
       setInterns(res.data.data?.interns || []);
@@ -30,7 +30,7 @@ export default function AppliedInternships() {
 
     try {
       await axios.post(
-        "http://localhost:8000/removefromintern",
+        "https://internship-extension.onrender.com/removefromintern",
         { internshipId },
         { withCredentials: true }
       );

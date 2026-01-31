@@ -12,7 +12,7 @@ export default function BookmarkedInternships() {
   async function getBookmarkedInternships() {
     try {
       const res = await axios.get(
-        "http://localhost:8000/api/v1/user/allbookmarked_internships",
+        "https://internship-extension.onrender.com/api/v1/user/allbookmarked_internships",
         { withCredentials: true }
       );
       // specific check based on your previous structure
@@ -33,7 +33,7 @@ export default function BookmarkedInternships() {
     try {
       // 2. Send request to server
       await axios.post(
-        "http://localhost:8000/remove_bookmarked_internship",
+        "https://internship-extension.onrender.com/remove_bookmarked_internship",
         { id },
         { withCredentials: true }
       );
@@ -49,7 +49,7 @@ export default function BookmarkedInternships() {
   async function apply(id) {
     try {
       await axios.post(
-        "http://localhost:8000/applyforintern",
+        "https://internship-extension.onrender.com/applyforintern",
         { id },
         { withCredentials: true }
       );

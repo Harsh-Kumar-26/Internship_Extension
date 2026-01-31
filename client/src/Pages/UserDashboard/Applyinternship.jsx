@@ -15,7 +15,7 @@ export default function ApplyInternships() {
 
   async function getInternship() {
     try {
-      const res = await axios.get("http://localhost:8000/api/v1/user/getallintern", {
+      const res = await axios.get("https://internship-extension.onrender.com/api/v1/user/getallintern", {
         withCredentials: true,
       })
 
@@ -43,7 +43,7 @@ export default function ApplyInternships() {
   async function apply(id) {
     try {
       await axios.post(
-        "http://localhost:8000/api/v1/user/applyforintern",
+        "https://internship-extension.onrender.com/api/v1/user/applyforintern",
         { internid:id },
         { withCredentials: true }
       )
@@ -56,7 +56,7 @@ export default function ApplyInternships() {
   async function bookmark(id) {
     try {
       await axios.post(
-        "http://localhost:8000/api/v1/user/bookmarked_internships",
+        "https://internship-extension.onrender.com/api/v1/user/bookmarked_internships",
         { internid:id },
         { withCredentials: true }
       )

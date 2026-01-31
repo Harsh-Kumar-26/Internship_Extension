@@ -18,7 +18,7 @@ export default function AdminDashboard() {
   async function getUser(params) {
     
     try {
-    const res = await  axios.get("http://localhost:8000/api/v1/common/currentuser",{withCredentials:true});
+    const res = await  axios.get("https://internship-extension.onrender.com/api/v1/common/currentuser",{withCredentials:true});
        
       setUsername(res.data.data.fullname);
 

@@ -11,7 +11,7 @@ export default function AllInterns() {
   async function getAllInterns() {
     try {
       const res = await axios.get(
-        "http://localhost:8000/api/v1/admin/getadminallinterns",
+        "https://internship-extension.onrender.com/api/v1/admin/getadminallinterns",
         { withCredentials: true }
       );
       setInterns(res.data.data || res.data);
@@ -30,7 +30,7 @@ export default function AllInterns() {
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this internship?")) return;
     try {
-      await axios.delete(`http://localhost:8000/api/v1/admin/deleteintern/${id}`, { withCredentials: true });
+      await axios.delete(`https://internship-extension.onrender.com/api/v1/admin/deleteintern/${id}`, { withCredentials: true });
       getAllInterns()
     } catch (error) { console.log(error); }
   };
@@ -40,7 +40,7 @@ export default function AllInterns() {
    
     
     try {
-      await axios.post(`http://localhost:8000/api/v1/admin/internstatuschange/${id}`, { status: newStatus }, { withCredentials: true });
+      await axios.post(`https://internship-extension.onrender.com/api/v1/admin/internstatuschange/${id}`, { status: newStatus }, { withCredentials: true });
       getAllInterns()
     } catch (error) {
       console.log(error);

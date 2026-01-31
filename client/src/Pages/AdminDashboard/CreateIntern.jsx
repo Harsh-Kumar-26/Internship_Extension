@@ -40,7 +40,7 @@ export default function CreateIntern() {
     try {
       setLoading(true);
       const res = await axios.get(
-        `http://localhost:8000/api/v1/common/getintern/${internid}`,
+        `https://internship-extension.onrender.com/api/v1/common/getintern/${internid}`,
         { withCredentials: true }
       );
       setFormData(res.data.data);
@@ -80,7 +80,7 @@ export default function CreateIntern() {
   async function create() {
     try {
       await axios.post(
-        "http://localhost:8000/api/v1/admin/createintern",
+        "https://internship-extension.onrender.com/api/v1/admin/createintern",
         formData,
         { withCredentials: true }
       );
@@ -96,7 +96,7 @@ export default function CreateIntern() {
   async function Edit() {
     try {
       await axios.put(
-        `http://localhost:8000/api/v1/admin/editintern/${internid}`,
+        `https://internship-extension.onrender.com/api/v1/admin/editintern/${internid}`,
         formData,
         { withCredentials: true }
       );

@@ -12,7 +12,7 @@ export default function Sidebar({ activeTab, setActiveTab, isOpen }) {
 async function Logout() {
   try {
     await axios.post(
-      "http://localhost:8000/api/v1/common/logout",
+      "https://internship-extension.onrender.com/api/v1/common/logout",
       {},
       {withCredentials: true}
     );

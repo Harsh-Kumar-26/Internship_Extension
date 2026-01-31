@@ -14,7 +14,7 @@ export default function Internship() {
     async function getIntern() {
       try {
         const res = await axios.get(
-          `http://localhost:8000/api/v1/common/getintern/${internid}`,
+          `https://internship-extension.onrender.com/api/v1/common/getintern/${internid}`,
           { withCredentials: true }
         );
         setIntern(res.data);

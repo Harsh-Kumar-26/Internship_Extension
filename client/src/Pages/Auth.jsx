@@ -86,7 +86,7 @@ function RegisterModal({ open, onClose }) {
   async function Signup(e) {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:8000/api/v1/common/signup", {
+      const res = await axios.post("https://internship-extension.onrender.com/api/v1/common/signup", {
         fullname, email, password, gender, date_of_birth: dateOfBirth,
         portfolio_link: portfolioLink, cntry_code: cntryCode, phone_number: phoneNumber,
         skills, location, rural, tribal, resume, role,
@@ -256,7 +256,7 @@ function LoginModal({ open, onClose }) {
   async function Signin(e) {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:8000/api/v1/common/login", { email, password }, { withCredentials: true });
+      const res = await axios.post("https://internship-extension.onrender.com/api/v1/common/login", { email, password }, { withCredentials: true });
       
       if (res.data.data.user.role === "admin") {
         navigate("/admindashboard/adminallintern");

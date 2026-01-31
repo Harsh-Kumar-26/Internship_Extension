@@ -12,7 +12,7 @@ export default function Applicant({ id }) {
   async function getApplicantProfile() {
     try {
       const res = await axios.get(
-        `http://localhost:8000/api/v1/common/getuser/${id}`,
+        `https://internship-extension.onrender.com/api/v1/common/getuser/${id}`,
         { withCredentials: true }
       );
       setUser(res.data);
